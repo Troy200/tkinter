@@ -5,17 +5,34 @@ root=Tk()
 root.geometry("700x700")
 root.title("Timer")
 
-
+totals=0
 def starttime():
-    
+    global totals
     sb.config(state=DISABLED)
     h.config(state=DISABLED)
     m.config(state=DISABLED)
     s.config(state=DISABLED)
-
-def countdown():
     totals= (int(hour.get())* 3600) + (int(min.get())* 60) + (int(sec.get()))
 
+    countdown()
+
+
+def countdown():
+    global totals
+    mi,se=divmod(totals,60)
+    ho,mi=divmod(mi,60)
+    hour.set(f"{ho:02d}")
+    min.set(f"{mi:02d}")
+    sec.set(f"{se:02d}")
+    if totals==0:
+        messagebox.showinfo("Time's Up","Time's Up" )
+        sb.config(state=NORMAL)
+        h.config(state=NORMAL)
+        m.config(state=NORMAL)
+        s.config(state=NORMAL)
+        return
+    totals=totals-1
+    root.after(1000,countdown)
 
 hour=StringVar()
 hour.set("00")
